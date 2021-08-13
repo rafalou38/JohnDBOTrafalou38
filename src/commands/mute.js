@@ -41,9 +41,8 @@ export default async function (client, message) {
 			mutedUsers.push(target.id);
 			const muteRole = guild.roles.cache.find(role => role.name === process.env.MUTED_ROLE_NAME);
 			target.roles.add(muteRole);
-			target.voice.setMute(true, reason);
+			target.voice.disconnect();
 			setTimeout(async () => {
-				target.voice.setMute(false);
 				mutedUsers.splice(mutedUsers.indexOf(target.id), 1);
 				target.roles.remove(muteRole);
 				logMessage(guild, `l'utilisateur <@${target.id}> a été unmute par <@${client.user.id}>`);

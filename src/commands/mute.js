@@ -41,7 +41,9 @@ export default async function (client, message) {
 			mutedUsers.push(target.id);
 			const muteRole = guild.roles.cache.find(role => role.name === process.env.MUTED_ROLE_NAME);
 			target.roles.add(muteRole);
-			target.voice.disconnect();
+			try{
+				target.voice.disconnect();
+			} catch (error) {}
 			setTimeout(async () => {
 				mutedUsers.splice(mutedUsers.indexOf(target.id), 1);
 				target.roles.remove(muteRole);

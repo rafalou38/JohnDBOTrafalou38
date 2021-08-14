@@ -46,8 +46,13 @@ export default async function (guild) {
 		const chanels = await guild.channels.fetch();
 		chanels.forEach(async chanel => {
 			// const perms = chanel.permissionOverwrites
-			await chanel.permissionOverwrites.create(role, roleTemplate.permisions);
-			console.log(`	Setup permision on chanel ${chanel.name} for role ${role.name}`);
+
+			try {
+				await chanel.permissionOverwrites.create(role, roleTemplate.permisions);
+				console.log(`	✔ Setup permision on chanel ${chanel.name} for role ${role.name}`);
+			} catch (error) {
+				console.log(`	❌ fail Setup permision on chanel ${chanel.name} for role ${role.name}`);
+			}
 		});
 	}
 }

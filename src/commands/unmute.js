@@ -2,6 +2,7 @@ import Discord from "discord.js";
 import { mutedUsers } from "../context.js";
 import { getMemberFromText } from "../utils/commands.js";
 import { logMessage } from "../utils/log.js";
+import { removeRole } from "../utils/setRole.js";
 
 /**
  * ban a user
@@ -27,9 +28,8 @@ export default async function (client, message) {
 
 	if (isAdmin) {
 		try {
-			const muteRole = guild.roles.cache.find(role => role.name === process.env.MUTED_ROLE_NAME);
 			mutedUsers.splice(mutedUsers.indexOf(target.id), 1);
-			target.roles.remove(muteRole);
+			removeRole(target, process.env.MUTED_ROLE_NAME);
 
 			logMessage(guild, `l'utilisateur <@${target.id}> a été unmute par <@${author.id}>`);
 		} catch (error) {

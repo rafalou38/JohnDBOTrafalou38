@@ -4,8 +4,9 @@ dotenv.config(); // load discord token from .env
 
 import Discord from "discord.js";
 import { commands } from "./commands/index.js";
-import { mutedUsers } from "./context.js";
+import { bannedUsers, mutedUsers } from "./context.js";
 import init from "./init.js";
+import { addRole } from "./utils/setRole.js";
 
 
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS"] });
@@ -48,6 +49,15 @@ setInterval(async () => {
 	const channel = await mainGuild.channels.fetch(process.env.GUILD_CHANEL_ID);
 	channel.send("Pensez à Bump et voter pour le serveur le plus souvent possible dans ce salon #pub-bump , merci.");
 }, 1000 * 60 * 60 * 6);
+
+client.on("guildMemberAdd", (member)=>{
+	if (bannedUsers.includes(member.id)) {
+		addRole(member, process.env.BANNED_ROLE_NAME);
+	}
+	if (mutedUsers.includes(member.id)) {
+		addRole(member, process.env.MUTED_ROLE_NAME);
+	}
+});
 
 
 client.login(process.env.BOT_TOKEN);

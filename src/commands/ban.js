@@ -1,5 +1,5 @@
 import Discord from "discord.js";
-import { mutedUsers } from "../context.js";
+import { bannedUsers } from "../context.js";
 import { logMessage } from "../utils/log.js";
 import { getMemberFromText } from "../utils/commands.js";
 import { addRole, removeRole } from "../utils/setRole.js";
@@ -40,6 +40,7 @@ export default async function (client, message) {
 	if (isAdmin) {
 		try {
 			addRole(target, process.env.BANNED_ROLE_NAME);
+			bannedUsers.push(target.id);
 			try {
 				target.user.send(`tu as été banni du server ${guild.name} pendant ${duration + type} pour la raison` + "```" + reason + "```");
 			} catch (error) { }
@@ -47,6 +48,7 @@ export default async function (client, message) {
 				target.voice.disconnect();
 			} catch (error) { }
 			setTimeout(async () => {
+				bannedUsers.splice(bannedUsers.indexOf(target.id), 1);
 				removeRole(target, process.env.BANNED_ROLE_NAME);
 				logMessage(guild, `l'utilisateur <@${target.id}> a été unban par <@${client.user.id}>`);
 			}, ms);

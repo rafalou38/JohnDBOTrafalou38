@@ -2,6 +2,7 @@ import Discord from "discord.js";
 import { removeRole } from "../utils/setRole.js";
 import { getMemberFromText } from "../utils/commands.js";
 import { logMessage } from "../utils/log.js";
+import { bannedUsers } from "../context.js";
 /**
  * ban a user
  *
@@ -27,6 +28,7 @@ export default async function (client, message) {
 	if (isAdmin) {
 		try {
 			removeRole(target, process.env.BANNED_ROLE_NAME);
+			bannedUsers.splice(bannedUsers.indexOf(target.id), 1);
 			logMessage(guild, `l'utilisateur <@${target.id}> a été de-bani par <@${author.id}>`);
 		} catch (error) {
 			console.error(error);

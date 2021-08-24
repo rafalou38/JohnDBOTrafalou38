@@ -47,7 +47,7 @@ client.on("messageCreate", async (message) => {
 setInterval(async () => {
 	const mainGuild = await client.guilds.fetch(process.env.GUILD_ID);
 	const channel = await mainGuild.channels.fetch(process.env.GUILD_CHANEL_ID);
-	channel.send("Pensez à Bump et voter pour le serveur le plus souvent possible dans ce salon #pub-bump , merci.");
+	channel.send(`<@&876431349727240255> Pensez à Bump et voter pour le serveur le plus souvent possible dans ce salon #pub-bump , merci.`);
 }, 1000 * 60 * 60 * 6);
 
 client.on("guildMemberAdd", (member)=>{
